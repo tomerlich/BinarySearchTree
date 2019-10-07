@@ -1,14 +1,19 @@
 from Node import Node
 
 
-def insert(node, key):
+def insert(node, key, height):
     if node is None:
-        return Node(key)
+        return Node(key, height + 1)
     if key < node.key:
-        node.left = insert(node.left, key)
+        node.left = insert(node.left, key, height + 2)
     else:
-        node.right = insert(node.right, key)
+        node.right = insert(node.right, key, height + 2)
     return node
+
+
+def calcBF(root):
+    if root.left is not None and root.right is not None:
+        root.balanceFactor = root.left.height - root.right.height
 
 
 def findPreSuc(root, key):
@@ -39,32 +44,35 @@ def findPreSuc(root, key):
 
 
 def printTree(root):
-    pass
+    out = ""
+    i = 0
+
+    if root is not None:
+        while i < root.height:
+            if i == 0:
+                out += "|"
+            else:
+                out += "-"
+            i += 1
+
+        out += str(root.key)
+        print(out)
+        printTree(root.left)
+        printTree(root.right)
+
 
 if __name__ == "__main__":
-    key = 40
     root = None
-    root = insert(root, 50)
-    insert(root, 30);
-    insert(root, 20);
-    insert(root, 40);
-    insert(root, 70);
-    insert(root, 60);
-    insert(root, 80);
-    findPreSuc.pre = None
-    findPreSuc.suc = None
+    root = insert(root, 50, -1)
+    insert(root, 30, -1)
+    insert(root, 20, -1)
+    insert(root, 40, -1)
+    insert(root, 70, -1)
+    insert(root, 60, -1)
+    insert(root, 80, -1)
+    insert(root, 65, -1)
+    insert(root, 63, -1)
+    insert(root, 50, -1)
+    insert(root, 70, -1)
 
     printTree(root)
-
-    findPreSuc(root, key)
-
-    if findPreSuc.pre is not None:
-        print("Predecessor is", findPreSuc.pre.key)
-
-    else:
-        print("No Predecessor")
-
-    if findPreSuc.suc is not None:
-        print("Successor is", findPreSuc.suc.key)
-    else:
-        print("No Successor")
